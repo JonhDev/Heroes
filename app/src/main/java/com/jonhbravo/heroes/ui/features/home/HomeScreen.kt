@@ -1,29 +1,33 @@
-package com.jonhbravo.heroes.ui.screens
+package com.jonhbravo.heroes.ui.features.home
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import com.jonhbravo.heroes.core.utils.heroes
 import com.jonhbravo.heroes.ui.composables.HeroCard
 import com.jonhbravo.heroes.ui.composables.HeroToolbar
 import com.jonhbravo.heroes.ui.theme.HeroesTheme
-import com.jonhbravo.heroes.utils.heroes
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    homeState: HomeState
+) {
     Scaffold(
         topBar = {
             HeroToolbar()
         }
     ) {
-        LazyColumn {
-            items(heroes) { hero ->
-                HeroCard(
-                    name = hero.name,
-                    author = hero.author,
-                    description = hero.description
-                )
+        if (homeState is HomeState.Success) {
+            LazyColumn {
+                items(homeState.heroes) { hero ->
+                    HeroCard(
+                        name = hero.name,
+                        imageUrl = hero.imageUrl,
+                        description = hero.description
+                    )
+                }
             }
         }
     }
@@ -33,6 +37,6 @@ fun HomeScreen() {
 @Composable
 fun HomeScreenPreview() {
     HeroesTheme {
-        HomeScreen()
+        HomeScreen(HomeState.Success(heroes))
     }
 }

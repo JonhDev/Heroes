@@ -3,6 +3,8 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+apply from: "$project.rootDir/gradle/tools/dependencies.gradle"
+
 android {
     compileSdk 32
 
@@ -46,16 +48,17 @@ android {
 }
 
 dependencies {
+    implementation appDependencies.core_ktx
+    implementation appDependencies.compose_ui
+    implementation appDependencies.compose_material
+    implementation appDependencies.compose_preview
+    implementation appDependencies.lifecycle_runtime
+    implementation appDependencies.activity_compose
+    implementation appDependencies.glide
 
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation "androidx.compose.ui:ui:$compose_version"
-    implementation "androidx.compose.material:material:$compose_version"
-    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
-    implementation 'androidx.activity:activity-compose:1.3.1'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
-    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+    testImplementation testDependencies.junit
+    androidTestImplementation testDependencies.androidx_junit
+    androidTestImplementation testDependencies.compose_ui_test
+
+    debugImplementation debugDependencies.compose_ui_tooling
 }
