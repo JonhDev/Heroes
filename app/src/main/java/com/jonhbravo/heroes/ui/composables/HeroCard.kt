@@ -1,5 +1,7 @@
 package com.jonhbravo.heroes.ui.composables
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -10,6 +12,7 @@ import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,13 +37,22 @@ fun HeroCard(
         elevation = 8.dp
     ) {
         Row {
-            GlideImage(
-                imageModel = imageUrl,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .weight(1.3f)
-                    .fillMaxSize()
-            )
+            if (imageUrl.isNotBlank()) {
+                GlideImage(
+                    imageModel = imageUrl,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .weight(1.3f)
+                        .fillMaxSize()
+                )
+            } else {
+                Box(
+                    modifier = Modifier
+                        .weight(1.3f)
+                        .fillMaxSize()
+                        .background(Color.Cyan)
+                )
+            }
             Column(
                 modifier = Modifier
                     .weight(2f)
@@ -73,11 +85,13 @@ fun HeroCard(
 fun TextWithIcon(
     text: String,
     icon: ImageVector,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = { }
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
+            .clickable(onClick = onClick)
     ) {
         Text(
             modifier = Modifier.weight(1f),
@@ -90,11 +104,22 @@ fun TextWithIcon(
 
 @Preview(showBackground = true)
 @Composable
+fun PreviewTextWithIcon() {
+    HeroesTheme {
+        TextWithIcon(
+            text = "Hola, soy un botón",
+            icon = Icons.Default.ArrowForward
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
 fun PreviewHeroCard() {
     HeroesTheme {
         HeroCard(
             name = "Capitan America",
-            imageUrl = "http://i.annihil.us/u/prod/marvel/i/mg/c/e0/535fecbbb9784.jpg",
+            imageUrl = "",
             description = "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500"
         )
     }

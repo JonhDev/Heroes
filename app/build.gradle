@@ -1,9 +1,9 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
-
-apply from: "$project.rootDir/gradle/tools/dependencies.gradle"
 
 android {
     compileSdk 32
@@ -19,6 +19,7 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+        buildConfigField "String", "BASE_URL", "\"https://gateway.marvel.com/\""
     }
 
     buildTypes {
@@ -55,10 +56,24 @@ dependencies {
     implementation appDependencies.lifecycle_runtime
     implementation appDependencies.activity_compose
     implementation appDependencies.glide
+    implementation appDependencies.hilt
+    implementation appDependencies.coroutines
+    implementation appDependencies.lifecycle_viewmodel
+    implementation appDependencies.hilt_androidx
+    implementation appDependencies.hilt_lifecycle_vm
+    implementation appDependencies.lifecycle_vm_compose
+    implementation appDependencies.retrofit
+    implementation appDependencies.retrofit_gson
+    implementation appDependencies.gson
+    implementation appDependencies.logging_interceptor
+
+    kapt appDependencies.hilt_compiler
 
     testImplementation testDependencies.junit
     androidTestImplementation testDependencies.androidx_junit
     androidTestImplementation testDependencies.compose_ui_test
 
     debugImplementation debugDependencies.compose_ui_tooling
+
+    implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
 }
