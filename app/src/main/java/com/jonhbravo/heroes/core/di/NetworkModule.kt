@@ -35,6 +35,7 @@ object NetworkModule {
                 addInterceptor(httpInterceptor)
             }
         }
+            .addInterceptor(AuthInterceptor())
             .callTimeout(DEFAULT_TIMEOUT, TimeUnit.MINUTES)
             .readTimeout(DEFAULT_TIMEOUT, TimeUnit.MINUTES)
             .writeTimeout(DEFAULT_TIMEOUT, TimeUnit.MINUTES)

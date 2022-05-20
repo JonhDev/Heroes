@@ -20,6 +20,9 @@ android {
             useSupportLibrary true
         }
         buildConfigField "String", "BASE_URL", "\"https://gateway.marvel.com/\""
+        buildConfigField "String", "TS", TS
+        buildConfigField "String", "API_KEY", API_KEY
+        buildConfigField "String", "HASH", HASH
     }
 
     buildTypes {
