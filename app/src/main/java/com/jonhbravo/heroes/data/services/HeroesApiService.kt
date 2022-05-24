@@ -1,6 +1,7 @@
-package com.jonhbravo.heroes.domain
+package com.jonhbravo.heroes.data.services
 
 import com.jonhbravo.heroes.core.network.HeroesNetworkResponse
+import com.jonhbravo.heroes.data.model.HeroesApiModel
 import retrofit2.http.GET
 
 interface HeroesApiService {

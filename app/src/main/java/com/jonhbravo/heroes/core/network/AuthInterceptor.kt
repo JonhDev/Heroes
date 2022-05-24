@@ -1,4 +1,4 @@
-package com.jonhbravo.heroes.core.di
+package com.jonhbravo.heroes.core.network
 
 import com.jonhbravo.heroes.BuildConfig
 import okhttp3.Interceptor

@@ -29,14 +29,14 @@ fun HomeStateContainer(
 
 @Composable
 fun HomeScreen(
-    homeState: HomeState
+    homeState: HomeUiState
 ) {
     Scaffold(
         topBar = {
             HeroToolbar()
         }
     ) {
-        if (homeState is HomeState.Loading) {
+        if (homeState is HomeUiState.Loading) {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -47,12 +47,12 @@ fun HomeScreen(
                     color = MaterialTheme.colors.primary
                 )
             }
-        } else if (homeState is HomeState.Success) {
+        } else if (homeState is HomeUiState.Success) {
             LazyColumn {
                 items(homeState.heroes) { hero ->
                     HeroCard(
                         name = hero.name,
-                        imageUrl = hero.imageUrl,
+                        imageUrl = hero.thumbnailUrl,
                         description = hero.description
                     )
                 }
@@ -68,7 +68,7 @@ fun HomeScreen(
 @Composable
 fun HomeScreenWithContentPreview() {
     HeroesTheme {
-        HomeScreen(HomeState.Success(heroes))
+        HomeScreen(HomeUiState.Success(heroes))
     }
 }
 
@@ -76,6 +76,6 @@ fun HomeScreenWithContentPreview() {
 @Composable
 fun HomeScreenWithLoadingPreview() {
     HeroesTheme {
-        HomeScreen(HomeState.Loading)
+        HomeScreen(HomeUiState.Loading)
     }
 }

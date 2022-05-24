@@ -1,4 +1,4 @@
-package com.jonhbravo.heroes.domain
+package com.jonhbravo.heroes.data.model
 
 import com.google.gson.annotations.SerializedName
 

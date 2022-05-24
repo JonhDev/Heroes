@@ -2,6 +2,7 @@ package com.jonhbravo.heroes.core.di
 
 import com.google.gson.Gson
 import com.jonhbravo.heroes.BuildConfig
+import com.jonhbravo.heroes.core.network.AuthInterceptor
 import com.jonhbravo.heroes.core.network.NetworkResponseAdapterFactory
 import dagger.Module
 import dagger.Provides

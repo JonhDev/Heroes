@@ -1,6 +1,6 @@
-package com.jonhbravo.heroes.core.di
+package com.jonhbravo.heroes.data.di
 
-import com.jonhbravo.heroes.domain.HeroesApiService
+import com.jonhbravo.heroes.data.services.HeroesApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

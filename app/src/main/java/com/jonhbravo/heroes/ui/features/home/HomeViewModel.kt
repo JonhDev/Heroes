@@ -1,15 +1,33 @@
 package com.jonhbravo.heroes.ui.features.home
 
 import androidx.lifecycle.ViewModel
-import com.jonhbravo.heroes.domain.HeroesApiService
+import androidx.lifecycle.viewModelScope
+import com.jonhbravo.heroes.data.repositories.HeroesRepository
+import com.jonhbravo.heroes.domain.usecases.GetHeroesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
+import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val apiService: HeroesApiService) : ViewModel() {
+class HomeViewModel @Inject constructor(private val getHeroesUseCase: GetHeroesUseCase) :
+    ViewModel() {
 
-    private val _homeState = MutableStateFlow<HomeState>(HomeState.Loading)
+    private val _homeState = MutableStateFlow<HomeUiState>(HomeUiState.Loading)
     val homeState = _homeState.asStateFlow()
+
+    init {
+        getHeroes()
+    }
+
+    private fun getHeroes() {
+        viewModelScope.launch {
+            _homeState.value = try {
+                HomeUiState.Success(getHeroesUseCase())
+            } catch (ex: Exception) {
+                HomeUiState.Error
+            }
+        }
+    }
 }
