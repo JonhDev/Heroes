@@ -21,8 +21,9 @@ class HomeViewModel @Inject constructor(private val getHeroesUseCase: GetHeroesU
         getHeroes()
     }
 
-    private fun getHeroes() {
+    fun getHeroes() {
         viewModelScope.launch {
+            _homeState.value = HomeUiState.Loading
             _homeState.value = try {
                 HomeUiState.Success(getHeroesUseCase())
             } catch (ex: Exception) {

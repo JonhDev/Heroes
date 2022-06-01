@@ -17,6 +17,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jonhbravo.heroes.core.utils.heroes
 import com.jonhbravo.heroes.ui.composables.HeroCard
 import com.jonhbravo.heroes.ui.composables.HeroToolbar
+import com.jonhbravo.heroes.ui.composables.Retry
+import com.jonhbravo.heroes.ui.model.HeroUiModel
 import com.jonhbravo.heroes.ui.theme.HeroesTheme
 
 @Composable
@@ -24,43 +26,66 @@ fun HomeStateContainer(
     viewModel: HomeViewModel = viewModel()
 ) {
     val state by viewModel.homeState.collectAsState()
-    HomeScreen(homeState = state)
+    HomeScreen(homeState = state) {
+        viewModel.getHeroes()
+    }
 }
 
 @Composable
 fun HomeScreen(
-    homeState: HomeUiState
+    homeState: HomeUiState,
+    onRetry: () -> Unit
 ) {
     Scaffold(
         topBar = {
             HeroToolbar()
         }
     ) {
-        if (homeState is HomeUiState.Loading) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(80.dp),
-                    color = MaterialTheme.colors.primary
-                )
-            }
-        } else if (homeState is HomeUiState.Success) {
-            LazyColumn {
-                items(homeState.heroes) { hero ->
-                    HeroCard(
-                        name = hero.name,
-                        imageUrl = hero.thumbnailUrl,
-                        description = hero.description
-                    )
-                }
-                item {
-                    Spacer(modifier = Modifier.size(16.dp))
-                }
-            }
+        when (homeState) {
+            HomeUiState.Loading -> LoadingScreen()
+            HomeUiState.Error -> ErrorRetry(onRetry)
+            is HomeUiState.Success -> HeroesList(heroes = homeState.heroes)
         }
+    }
+}
+
+@Composable
+fun LoadingScreen() {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        CircularProgressIndicator(
+            modifier = Modifier.size(80.dp),
+            color = MaterialTheme.colors.primary
+        )
+    }
+}
+
+@Composable
+fun HeroesList(heroes: List<HeroUiModel>) {
+    LazyColumn {
+        items(heroes) { hero ->
+            HeroCard(
+                name = hero.name,
+                imageUrl = hero.thumbnailUrl,
+                description = hero.description
+            )
+        }
+        item {
+            Spacer(modifier = Modifier.size(16.dp))
+        }
+    }
+}
+
+@Composable
+fun ErrorRetry(onRetryClick: () -> Unit) {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Retry(onClick = onRetryClick)
     }
 }
 
@@ -68,7 +93,7 @@ fun HomeScreen(
 @Composable
 fun HomeScreenWithContentPreview() {
     HeroesTheme {
-        HomeScreen(HomeUiState.Success(heroes))
+        HomeScreen(HomeUiState.Success(heroes)) { /** Nothing **/ }
     }
 }
 
@@ -76,6 +101,14 @@ fun HomeScreenWithContentPreview() {
 @Composable
 fun HomeScreenWithLoadingPreview() {
     HeroesTheme {
-        HomeScreen(HomeUiState.Loading)
+        HomeScreen(HomeUiState.Loading) { /** Nothing **/ }
+    }
+}
+
+@Preview
+@Composable
+fun HomeScreenWithErrorPreview() {
+    HeroesTheme {
+        HomeScreen(HomeUiState.Error) { /** Nothing **/ }
     }
 }
